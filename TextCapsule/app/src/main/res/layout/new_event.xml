@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:id="@+id/new_event">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Date"
+                android:id="@+id/dateSetBut"
+                android:onClick="setDate"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:ems="10"
+                android:id="@+id/editSetDate"
+                android:layout_above="@+id/editSetTime"
+                android:layout_centerHorizontal="true"
+                android:text="Date" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="time"
+                android:ems="10"
+                android:id="@+id/editSetTime"
+                android:layout_below="@+id/dateSetBut"
+                android:layout_alignLeft="@+id/editSetDate"
+                android:layout_alignStart="@+id/editSetDate"
+                android:text="Time" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Time"
+                android:id="@+id/timeSetBut"
+                android:layout_below="@+id/dateSetBut"
+                android:layout_alignRight="@+id/dateSetBut"
+                android:layout_alignEnd="@+id/dateSetBut"
+                android:onClick="setTime"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editEventTitle"
+                android:text="Title of the Event "
+                android:inputType="textCapWords"
+                android:layout_below="@+id/editPhoneNum"
+                android:layout_alignLeft="@+id/editPhoneNum"
+                android:layout_alignStart="@+id/editPhoneNum"
+                android:layout_alignRight="@+id/editPhoneNum"
+                android:layout_alignEnd="@+id/editPhoneNum" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editCustomMsg"
+                android:text="Type Custom Message"
+                android:layout_below="@+id/editEventTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/button"
+                android:layout_alignEnd="@+id/button"
+                android:inputType="textMultiLine"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/editPhoneNum"
+                android:layout_alignBottom="@+id/button"
+                android:layout_alignLeft="@+id/editSetTime"
+                android:layout_alignStart="@+id/editSetTime"
+                android:text="Phone Number" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Contact"
+                android:id="@+id/button"
+                android:layout_below="@+id/timeSetBut"
+                android:layout_alignLeft="@+id/timeSetBut"
+                android:layout_alignStart="@+id/timeSetBut"
+                android:onClick="selectContact"/>
+
+            <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All Done! "
+                android:id="@+id/finishBut"
+                android:onClick="goToHome"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editContactName"
+                android:layout_above="@+id/editEventTitle"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_toLeftOf="@+id/editPhoneNum"
+                android:layout_toStartOf="@+id/editPhoneNum" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save Event"
+                android:id="@+id/saveDataBut"
+                android:onClick="saveData"
+                android:layout_above="@+id/previewBut"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preview"
+                android:id="@+id/previewBut"
+                android:onClick="goToPreviewEvent"
+                android:layout_above="@+id/finishBut"
+                android:layout_centerHorizontal="true" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Suggested Message"
+                android:id="@+id/checkSugMsg"
+                android:checked="false"
+                android:onClick="useSugMsg"
+                android:layout_below="@+id/editCustomMsg"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The Suggested Message is "
+                android:id="@+id/textView3"
+                android:layout_below="@+id/checkSugMsg"
+                android:layout_centerHorizontal="true" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/editSugMsg"
+                android:layout_below="@+id/textView3"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/button"
+                android:layout_alignEnd="@+id/button" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

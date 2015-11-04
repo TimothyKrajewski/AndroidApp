@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suggested Message"
+        android:id="@+id/radioButton"
+        android:checked="false" />
+
+    <MultiAutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Custom Message"
+        android:id="@+id/multiAutoCompleteTextView"
+        android:layout_weight="1"
+        android:layout_row="1"
+        android:layout_column="0" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:layout_row="2"
+        android:layout_column="0"
+        android:text="Enter a Phone Number" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Event "
+        android:id="@+id/button5"
+        android:layout_row="26"
+        android:layout_column="10"
+        android:onClick="goToHome"/>
+
+
+</GridLayout>

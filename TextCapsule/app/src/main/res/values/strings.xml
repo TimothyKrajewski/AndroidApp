@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Text Capsule</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_sendtype_list">Send Types</string>
+    <string name="title_sendtype_detail">Send Type Detail</string>
+    <string name="facebook_app_id">Send Type Detail</string>
+
+</resources>
