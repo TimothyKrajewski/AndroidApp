@@ -78,6 +78,10 @@ public class event {
     // To strings for printing
     public static String eventTimeToString()
     {
+        if(hour > 11)
+        {
+            AmorPm = "pm";
+        }
         if(min < 10)
         {
             return hour + ":" + "0" + min + AmorPm;
@@ -165,4 +169,11 @@ public class event {
         return "Sending " + title + " on: " + eventDateToString() + " at " + eventTimeToString() + " sending to "
                 + phoneNum + " and it says " + "\"" + message + "\"";
     }
+
+    public static String convertString()
+    {
+        return title + " " + message + " " + phoneNum + " " + " " + year + " " + month + " " + day + " " + hour
+                + " " + min + " " +  AmorPm;
+    }
+
 }

@@ -13,31 +13,27 @@ public class analysisAlgorithm
     private static String[] suggestMessage = {"Happy Birthday!", "Happy Birthday!", "Happy Anniversary!"
             , "Happy Anniversary!", "Can't wait to see you at the party", "Can't wait to see you at the party"};
     private static int i = 0;
-    public static String msg;
-    public static boolean result = false;
+    public static String msg = "Shoot.. no key word found!";
 
 
-    public static boolean analyze(String titl)
+
+    public static String analyze(String titl)
     {
 
 
-        while( i < keyWords.length)
+        for(int i = 0; i < keyWords.length; i++)
         {
-
-            if(titl.equalsIgnoreCase(keyWords[i]))
+            if(titl.contains(keyWords[i]))
             {
-                result = true;
                 msg = suggestMessage[i];
+                break;
             }
-            i++;
-
         }
-        return result;
+        return msg;
     }
 
-    public static String suggestMessage()
-    {
-        return msg;
 
+    public static String getMsg() {
+        return msg;
     }
 }

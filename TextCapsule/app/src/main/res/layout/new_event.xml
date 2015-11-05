@@ -35,7 +35,7 @@
                 android:id="@+id/editSetDate"
                 android:layout_above="@+id/editSetTime"
                 android:layout_centerHorizontal="true"
-                android:text="Date" />
+                android:hint="Date" />
 
             <EditText
                 android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
                 android:layout_below="@+id/dateSetBut"
                 android:layout_alignLeft="@+id/editSetDate"
                 android:layout_alignStart="@+id/editSetDate"
-                android:text="Time" />
+                android:hint="Time" />
 
             <Button
                 android:layout_width="wrap_content"
@@ -61,8 +61,21 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:inputType="phone"
+                android:ems="10"
+                android:id="@+id/editPhoneNum"
+                android:layout_alignBottom="@+id/button"
+                android:layout_alignLeft="@+id/editSetTime"
+                android:layout_alignStart="@+id/editSetTime"
+                android:hint="Phone Number"
+                android:layout_toLeftOf="@+id/button"
+                android:layout_toStartOf="@+id/button" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/editEventTitle"
-                android:text="Title of the Event "
+                android:hint="Title of the Event "
                 android:inputType="textCapWords"
                 android:layout_below="@+id/editPhoneNum"
                 android:layout_alignLeft="@+id/editPhoneNum"
@@ -74,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editCustomMsg"
-                android:text="Type Custom Message"
+                android:hint="Type Custom Message"
                 android:layout_below="@+id/editEventTitle"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
@@ -82,26 +95,15 @@
                 android:layout_alignEnd="@+id/button"
                 android:inputType="textMultiLine"/>
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="phone"
-                android:ems="10"
-                android:id="@+id/editPhoneNum"
-                android:layout_alignBottom="@+id/button"
-                android:layout_alignLeft="@+id/editSetTime"
-                android:layout_alignStart="@+id/editSetTime"
-                android:text="Phone Number" />
-
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Contact"
                 android:id="@+id/button"
                 android:layout_below="@+id/timeSetBut"
-                android:layout_alignLeft="@+id/timeSetBut"
-                android:layout_alignStart="@+id/timeSetBut"
-                android:onClick="selectContact"/>
+                android:onClick="selectContact"
+                android:layout_toRightOf="@+id/textView3"
+                android:layout_toEndOf="@+id/textView3" />
 
             <Button
                 style="?android:attr/buttonStyleSmall"
@@ -126,9 +128,9 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save Event"
+                android:text="Analyze"
                 android:id="@+id/saveDataBut"
-                android:onClick="saveData"
+                android:onClick="runAnalysis"
                 android:layout_above="@+id/previewBut"
                 android:layout_centerHorizontal="true" />
 

@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
 
         <Button
             android:layout_width="wrap_content"
@@ -23,8 +24,8 @@
             />
 
         <CalendarView
-            android:layout_width="fill_parent"
-            android:layout_height="600dp"
+            android:layout_width="wrap_content"
+            android:layout_height="212dp"
             android:id="@+id/calendarView"
             android:layout_gravity="center_vertical|right"
             android:showWeekNumber="false" />
@@ -33,8 +34,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listView"
+
             android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SendSms"
+        android:id="@+id/Sendsms"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout"
+        android:onClick="sendSMS"
+        android:layout_marginRight="43dp"
+        android:layout_marginEnd="43dp" />
 
 </RelativeLayout>
