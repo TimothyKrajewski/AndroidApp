@@ -148,7 +148,7 @@ public class newEvent extends Activity {
         EditText suggestMsg = (EditText) findViewById(R.id.editSugMsg);
         EditText title = (EditText) findViewById(R.id.editEventTitle);
         EditText phone = (EditText) findViewById(R.id.editPhoneNum);
-        EditText message = (EditText) findViewById(R.id.editCustomMsg);
+        //EditText message = (EditText) findViewById(R.id.editCustomMsg);
         EditText setTime = (EditText) findViewById(R.id.editSetTime);
         EditText setDate = (EditText) findViewById(R.id.editSetDate);
         boolean allNum;
@@ -173,27 +173,17 @@ public class newEvent extends Activity {
             if (phone.getText().toString().length() == 10 && allNum)// change one back to 10
             {
                 if (!title.getText().toString().equals("")) {
-                    if (!message.getText().toString().equals("")) {
-                        setPhoneNumber = phone.getText().toString();
-                        setMessage = message.getText().toString();
 
+                        setPhoneNumber = phone.getText().toString();
+                        setTitle = title.getText().toString();
 
                         //analyze
-                        setTitle = title.getText().toString();
                         suggestMessage = analysisAlgorithm.analyze(setTitle);
                         suggestMessage = analysisAlgorithm.getMsg();
                         suggestMsg.setText(suggestMessage);
                         suggestMsg.setVisibility(View.VISIBLE);
                         suggestMsg.setFocusable(false);
-                        suggestMessage = analysisAlgorithm.getMsg();
-                        suggestMsg.setText(suggestMessage);
-                        suggestMsg.setVisibility(View.VISIBLE);
-                        suggestMsg.setFocusable(false);
                         Toast.makeText(getBaseContext(), "Analyzed...hopefully the boys in the lab found something", Toast.LENGTH_SHORT).show();
-
-                    } else
-                        Toast.makeText(getBaseContext(), "My dad always said if you don't have anything " +
-                                "nice to say don't say anything at all... Do you not have a anything nice to say (Set message)", Toast.LENGTH_LONG).show();
                 } else
                     Toast.makeText(getBaseContext(), "We should give this a name! (Set title) ", Toast.LENGTH_LONG).show();
 
@@ -222,11 +212,9 @@ public class newEvent extends Activity {
         if(suggestMessage != null)
         {
             EditText message = (EditText) findViewById(R.id.editCustomMsg);
-
             message.setText(suggestMessage);
             message.setVisibility(View.VISIBLE);
-            message.setFocusable(false);
-
+            suggestMessage = null;
         }
 
     }
@@ -244,51 +232,60 @@ public class newEvent extends Activity {
 //          application returns to home activity
 //-----------------------------------------------------------------------------------------
     public void goToHome(View v) {
-        if(runAnalysisHappen) {
-            event e = new event(setTitle, setYear, setMonth, setDay, setHour, setMin, setPhoneNumber, setMessage);
-            //writeToFile(event.convertString());
-            Toast.makeText(getBaseContext(), e.toString() , Toast.LENGTH_LONG).show();
+        if (runAnalysisHappen) {
 
-            //this if checks if eventList is empty
-            if(home.size() !=  0 )
-            {
-                //for loop does sort to place newly created events in the correct spot Earliest date come first
-                for(int i = 0; i <= home.size() ; i++)
-                {
-                   if( i == home.size())
-                   {
-                       home.addAt(i,e);
-                       break;
-                   }
-                    else if(home.getDate(i) > e.sortDate())
-                   {
-                           home.addAt(i, e);
-                           break;
-                   }
+            EditText title = (EditText) findViewById(R.id.editEventTitle);
+            EditText phone = (EditText) findViewById(R.id.editPhoneNum);
+            EditText message = (EditText) findViewById(R.id.editCustomMsg);
+
+            if (!message.getText().toString().equals("")) {
+                setTitle = title.getText().toString();
+                setPhoneNumber = phone.getText().toString();
+                setMessage = message.getText().toString();
+
+                event e = new event(setTitle, setYear, setMonth, setDay, setHour, setMin, setPhoneNumber, setMessage);
+                //writeToFile(event.convertString());
+
+                //this if checks if eventList is empty
+                if (home.size() != 0) {
+                    //for loop does sort to place newly created events in the correct spot Earliest date come first
+                    for (int i = 0; i <= home.size(); i++) {
+                        if (i == home.size()) {
+                            home.addAt(i, e);
+                            break;
+                        } else if (home.getDate(i) > e.sortDate())
+                        {
+                            home.addAt(i, e);
+                            break;
+                        }
+                    }
                 }
+                else
+                {
+                    home.add(e);
+                }
+
+
+                Intent intent = new Intent(this, home.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                Toast.makeText(getBaseContext(), "Event Created", Toast.LENGTH_SHORT).show();
             }
             else
             {
-                home.add(e);
+                Toast.makeText(getBaseContext(), "My dad always said if you don't have anything " +
+                        "nice to say don't say anything at all... Do you not have a anything nice to say (Set message)",                                    Toast.LENGTH_LONG).show();
             }
-
-
-
-            Intent intent = new Intent(this, home.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            Toast.makeText(getBaseContext(), "Event Created" , Toast.LENGTH_SHORT).show();
         }
         else
         {
-            Toast.makeText(getBaseContext(), "Why don't we get the folks in the lab to analyze this", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Why don't we get the folks in the lab to analyze this", Toast.LENGTH_LONG)                        .show();
 
         }
-
     }
 
     //*****************************************************************************************
-    //          Not yet implemented as SQl data base in much better but much harder  !       //
+    //          Not yet implemented as SQl data base is much better but much harder  !       //
     //*****************************************************************************************
     protected void writeToFile(String data) {
 

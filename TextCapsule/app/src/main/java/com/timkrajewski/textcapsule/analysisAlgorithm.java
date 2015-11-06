@@ -13,9 +13,6 @@
 // Last modified on: 11/5/15
 package com.timkrajewski.textcapsule;
 
-import android.widget.Toast;
-import java.util.Scanner;
-
 /**
  * Created by TimKrajewski on 11/3/15.
  */
