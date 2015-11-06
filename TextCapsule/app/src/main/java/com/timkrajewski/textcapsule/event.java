@@ -1,7 +1,19 @@
+// Name: Tim Krajewski
+// Course: CSC 415
+// Semester: Fall 2015
+// Instructor: Dr. Pulimood
+// Project name: Text Capsule
+// Description: My project creates and store event objects. It then takes those event objects  and
+// stores them in date order(earliest date first) in a list and on the home screen in a listview object
+// the user can create and store as many event objects as they want. from the home screen the user can
+// chose send the message as sms-s
+// Filename: event.java
+// Description:Contains: methods to construct edit event objects
+// Purpose: to create and edit event objects
+// Last modified on: 11/5/15
 package com.timkrajewski.textcapsule;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+
 
 /**
  * Created by TimKrajewski on 11/1/15.
@@ -19,9 +31,25 @@ public class event {
     private String title;
 
 
-    /**
-     * Makes an event with name year month day hour min
-     */
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: onCreate()
+//
+//    Parameters:
+//    input String: title of object
+//    input int; year of event
+//    input int; month of event
+//    input int; day of event
+//    input int; hour of event
+//    input int; minute of event
+//    input String; phonenumber the message is going to be sent to
+//    input String; message that is going to be sent
+//
+//
+//
+//    Pre-condition: inputs must be correct type method must be called
+//    Post-condition: event object is created
+//-----------------------------------------------------------------------------------------
     public event(String titl, int yr, int mnth, int dy, int hr, int mn, String phNm, String msg) {
         title = titl;
         year = yr;
@@ -35,41 +63,39 @@ public class event {
     }
 
 
-    public void setMessage(String msg) {
-        message = msg;
-    }
 
-    public void setEventDate(int yr, int mnth, int dy) {
-        year = yr;
-        month = mnth + 1;
-        day = dy;
-    }
-
-    public void setEventTime(int setHour, int setMin) {
-        hour = setHour;
-        min = setMin;
-
-        if (hour > 12) {
-            hour = hour % 12;
-            AmorPm = "pm";
-        }
-        if (hour == 0) {
-            hour = 12;
-            AmorPm = "am";
-        }
-
-    }
-
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: setName()
+//
+//    Parameters:
+//    input String; name of event
+//
+//    Pre-condition:  inputs must be correct type method must be called
+//    Post-condition: name is set
+//-----------------------------------------------------------------------------------------
     public void setName(String nm) {
         name = nm;
     }
 
-    public void setTitle(String titl) {
-        title = titl;
-    }
+    //*******************************************************************************************
+    //                      To Strings for  of event objects printing                          //
+    //*******************************************************************************************
 
-
-    // To strings for printing
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: eventTimeToSting()
+//
+//    Parameters:
+//       input int; hour of event
+//       input int; minute of event
+//
+//
+//
+//    Pre-condition:  Pre-condition: inputs must be correct type method must be called
+//    Post-condition: the time of the event is spit out in an easy way for the user to
+//      understand
+//-----------------------------------------------------------------------------------------
     public static String eventTimeToString(int hr, int mn) {
         String AmorPm = "am";
 
@@ -82,7 +108,20 @@ public class event {
             return hr + ":" + mn + AmorPm;
     }
 
-
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: eventDateToSting()
+//
+//    Parameters:
+//       input int; year of event
+//       input int; month of event
+//       input int; day of event
+//
+//
+//    Pre-condition:  Pre-condition: inputs must be correct type method must be called
+//    Post-condition: the date of the event is spit out in an easy way for the user to
+//      understand
+//-----------------------------------------------------------------------------------------
     public static String eventDateToString(int yr, int mnth, int dy) {
 
         String dayName = "th";
@@ -140,39 +179,64 @@ public class event {
         return monthName + " " + dy + dayName + " " + yr;
     }
 
-
-    public String nameTostring() {
-        return name;
-    }
-
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: getphoneNum()
+//
+//    Parameters:
+//
+//
+//    Pre-condition:  method must be called
+//    Post-condition: phone number is given
+//-----------------------------------------------------------------------------------------
     public String getphoneNum() {
         return phoneNum;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: getMessage()
+//
+//    Parameters:
+//
+//
+//    Pre-condition:  method must be called
+//    Post-condition: message is given
+//-----------------------------------------------------------------------------------------
     public String getMessage() {
         return message;
     }
 
-    public String suceesMessage() {
-        return "Sending " + title + " on: " + eventDateToString(year, month, day) + " at " + eventTimeToString(hour, min) + " sending to "
-                + phoneNum + " and it says " + "\"" + message + "\"";
-    }
 
-    public String convertString() {
-        return title + " " + message + " " + phoneNum + " " + " " + year + " " + month + 1 + " " + day + " " + hour
-                + " " + min + " " + AmorPm;
-    }
 
-    //toStirng can not be static but has to be over written for the list view
+
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: toString()
+//
+//    Parameters:
+//
+//
+//    Pre-condition:  method must be called
+//    Post-condition: event object is converted to string
+//-----------------------------------------------------------------------------------------
     public String toString() {
         return "Sending " + title + " on: " + eventDateToString(year, month, day) + " at " + eventTimeToString(hour, min) + " sending to "
                 + phoneNum + " and it says " + "\"" + message + "\"";
     }
 
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: toString()
+//
+//    Parameters:
+//
+//
+//    Pre-condition:  method must be called
+//    Post-condition: the time of the event is concatenated into one double in
+//      year month day hour min;
+//-----------------------------------------------------------------------------------------
     public double sortDate() {
         String str = "";
         String mon, d, hr, mn;

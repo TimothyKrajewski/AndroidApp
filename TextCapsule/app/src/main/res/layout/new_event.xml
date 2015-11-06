@@ -148,7 +148,7 @@
                 android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Use Suggested Method"
+                android:text="Use Suggested Message"
                 android:id="@+id/button"
                 android:onClick="useSugMsg"
                 android:layout_below="@+id/editSugMsg"

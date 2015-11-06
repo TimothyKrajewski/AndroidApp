@@ -1,7 +1,22 @@
+// Name: Tim Krajewski
+// Course: CSC 415
+// Semester: Fall 2015
+// Instructor: Dr. Pulimood
+// Project name: Text Capsule
+// Description: My project creates and store event objects. It then takes those event objects  and
+// stores them in date order(earliest date first) in a list and on the home screen in a listview object
+// the user can create and store as many event objects as they want. from the home screen the user can
+// chose send the message as sms-s
+// Filename: newEvent.java
+// Description:Contains: the creation of the newEvent activity screen, temp vairables to pass into event,
+// a way to go back to the home screen
+// Purpose: To create the newEvent activity, gives the user a way to input all the data needed to create
+// a new event, creates new events to store in eventList, uses an algorithm to interpurt the users input and
+// suggest a message based on it
+// Last modified on: 11/5/15
 package com.timkrajewski.textcapsule;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,10 +34,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.util.Calendar;
 
 
@@ -47,13 +58,32 @@ public class newEvent extends Activity {
     private String suggestMessage = analysisAlgorithm.getMsg();
     private boolean runAnalysisHappen = false;
 
-
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: onCreate()
+//
+//    Parameters:
+//    Bundle saved; given by default
+//
+//    Pre-condition: Start activity
+//    Post-condition: Creates newEvent screen
+//-----------------------------------------------------------------------------------------
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_event);
     }
 
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: setDate()
+//
+//    Parameters:
+//    input view; view allows the method to called by onClick
+//
+//    Pre-condition: Set Date Button is pressed
+//    Post-condition: temp variables for year month day are set by user
+//-----------------------------------------------------------------------------------------
     public void setDate(View v) {
 
 
@@ -74,7 +104,16 @@ public class newEvent extends Activity {
 
     }
 
-
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: setTime()
+//
+//    Parameters:
+//    input view; view allows the method to called by onClick
+//
+//    Pre-condition: Set Time Button is pressed
+//    Post-condition: temp variables for hour min are set by user
+//-----------------------------------------------------------------------------------------
     public void setTime(View v) {
 
         Calendar cal = Calendar.getInstance();
@@ -93,6 +132,17 @@ public class newEvent extends Activity {
         timeDialog.show();
     }
 
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: runAnalysis()
+//
+//    Parameters:
+//    input view; view allows the method to called by onClick
+//
+//    Pre-condition: anaylze Button is pressed, every field must have been filled in properly by the user
+//    Post-condition: temp variables for title message phoneNumber are set, The users input is run
+//      through the algorith and a suggested message is created
+//-----------------------------------------------------------------------------------------
     public void runAnalysis(View v) {
 
         EditText suggestMsg = (EditText) findViewById(R.id.editSugMsg);
@@ -129,7 +179,6 @@ public class newEvent extends Activity {
 
 
                         //analyze
-
                         setTitle = title.getText().toString();
                         suggestMessage = analysisAlgorithm.analyze(setTitle);
                         suggestMessage = analysisAlgorithm.getMsg();
@@ -158,6 +207,16 @@ public class newEvent extends Activity {
     }
 
 
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: useSugMsg()
+//
+//    Parameters:
+//    input view; view allows the method to called by onClick
+//
+//    Pre-condition:  Use Suggested message button is pressed
+//    Post-condition: suggested message is set to message
+//-----------------------------------------------------------------------------------------
     public void useSugMsg(View v)
     {
         if(suggestMessage != null)
@@ -172,6 +231,65 @@ public class newEvent extends Activity {
 
     }
 
+    //-----------------------------------------------------------------------------------------
+//
+//  Function: goToHome()
+//
+//    Parameters:
+//    input view; view allows the method to called by onClick
+//
+//    Pre-condition:  All done! button is pressed all fields have been filled in correctly
+//          run Anylsis has been run
+//    Post-condition: Event is created, then sorted, and stored in the correct spot of eventList
+//          application returns to home activity
+//-----------------------------------------------------------------------------------------
+    public void goToHome(View v) {
+        if(runAnalysisHappen) {
+            event e = new event(setTitle, setYear, setMonth, setDay, setHour, setMin, setPhoneNumber, setMessage);
+            //writeToFile(event.convertString());
+            Toast.makeText(getBaseContext(), e.toString() , Toast.LENGTH_LONG).show();
+
+            //this if checks if eventList is empty
+            if(home.size() !=  0 )
+            {
+                //for loop does sort to place newly created events in the correct spot Earliest date come first
+                for(int i = 0; i <= home.size() ; i++)
+                {
+                   if( i == home.size())
+                   {
+                       home.addAt(i,e);
+                       break;
+                   }
+                    else if(home.getDate(i) > e.sortDate())
+                   {
+                           home.addAt(i, e);
+                           break;
+                   }
+                }
+            }
+            else
+            {
+                home.add(e);
+            }
+
+
+
+            Intent intent = new Intent(this, home.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            Toast.makeText(getBaseContext(), "Event Created" , Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            Toast.makeText(getBaseContext(), "Why don't we get the folks in the lab to analyze this", Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
+    //*****************************************************************************************
+    //          Not yet implemented as SQl data base in much better but much harder  !       //
+    //*****************************************************************************************
     protected void writeToFile(String data) {
 
 
@@ -214,52 +332,5 @@ public class newEvent extends Activity {
 
         return ret;
     }
-
-
-
-    public void goToHome(View v) {
-        if(runAnalysisHappen) {
-            event e = new event(setTitle, setYear, setMonth, setDay, setHour, setMin, setPhoneNumber, setMessage);
-            //writeToFile(event.convertString());
-            Toast.makeText(getBaseContext(), e.toString() , Toast.LENGTH_LONG).show();
-
-            //this if checks if eventList is empty
-            if(home.size() !=  0 )
-            {
-                //for loop does sort to place newly created events in the correct spot Earliest date come first
-                for(int i = 0; i <= home.size() ; i++)
-                {
-                   if( i == home.size())
-                   {
-                       home.addAt(i,e);
-                       break;
-                   }
-                    else if(home.getDate(i) > e.sortDate())
-                   {
-                           home.addAt(i, e);
-                           break;
-                   }
-                }
-            }
-            else
-            {
-                home.add(e);
-            }
-
-
-
-            Intent intent = new Intent(this, home.class);
-            startActivity(intent);
-           // Toast.makeText(getBaseContext(), e.suceesMessage() , Toast.LENGTH_LONG).show();
-        }
-        else
-        {
-            Toast.makeText(getBaseContext(), "Why don't we get the folks in the lab to analyze this", Toast.LENGTH_LONG).show();
-
-        }
-
-    }
-
-
 
 }
