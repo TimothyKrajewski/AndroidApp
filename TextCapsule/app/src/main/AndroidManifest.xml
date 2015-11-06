@@ -26,8 +26,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".newEvent"
-            android:parentActivityName=".home"/>
-        <activity android:name=".previewEvent" />
+            android:parentActivityName=".home"
+
+            />
+
         <activity android:name=".sendMessage" />
 
         <activity android:name="com.facebook.FacebookActivity"

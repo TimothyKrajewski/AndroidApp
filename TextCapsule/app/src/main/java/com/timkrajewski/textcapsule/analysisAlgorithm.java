@@ -19,7 +19,7 @@ public class analysisAlgorithm
 
     public static String analyze(String titl)
     {
-
+        msg="Shoot.. no key word found!";
 
         for(int i = 0; i < keyWords.length; i++)
         {

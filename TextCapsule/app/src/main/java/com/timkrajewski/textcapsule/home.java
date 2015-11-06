@@ -1,65 +1,53 @@
 package com.timkrajewski.textcapsule;
 
 
-import android.content.Context;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.ListAdapter;
+import android.widget.CalendarView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
-import java.util.Scanner;
-
-import com.facebook.FacebookSdk;
 
 
 
 public class home extends AppCompatActivity {
 
-    private static ArrayList<event> eventList = new ArrayList<event>(10);
+    private static List<event> eventList = new ArrayList<>();
+    ListView eventLister;
+    ArrayAdapter<event> arrayAdapter;
+
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        ListView eventLister = (ListView)findViewById(R.id.listView);
-
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        //Scanner saved = new Scanner("eventList.txt");
+        setContentView(R.layout.activity_home);
+        eventLister = (ListView) findViewById(R.id.listView);
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventList);
+        eventLister.setAdapter(arrayAdapter);
 
-
-        FacebookSdk.sdkInitialize(getApplicationContext());
         // Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.
-        setContentView(R.layout.activity_home);
-//        for(int i = 0; i < eventList.size() ; i++)
-//        {
-//            eventListString.add(eventList.get(i).convertString());
-//            if(eventListString.get(i)!= null)
-//            {
-//                ArrayAdapter<String> arrayAdapter =
-//                        new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, eventListString);
-//                eventLister.setAdapter(arrayAdapter);
-//            }
-//        }
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     @Override
@@ -84,44 +72,52 @@ public class home extends AppCompatActivity {
     public void goToNewEvent(View v)
     {
         Intent intent = new Intent(this, newEvent.class);
-        //intent.putExtra(String, Data)
         startActivity(intent);
     }
 
     public void sendSMS(View v)
     {
-        if(eventList.size() > 0 ) {
-            String message = "happy";
-            String phoneNumber = "to be here";
-            event temp = eventList.get(0);
-            String[] str = temp.convertString().split(" ");
-            str[1] = message;
-            str[2] = phoneNumber;
-            Toast.makeText(getBaseContext(), temp.convertString(), Toast.LENGTH_LONG).show();
-            Toast.makeText(getBaseContext(), phoneNumber, Toast.LENGTH_LONG).show();
+
+        if(eventList.size() >  0 )
+        {
+            event event = eventList.remove(0);
+            String message = event.getMessage();
+            String phoneNumber = event.getphoneNum();
+
+            try
+            {
+
+                SmsManager.getDefault().sendTextMessage(phoneNumber, null, message , null, null);
+                eventLister = (ListView) findViewById(R.id.listView);
+                arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, eventList);
+                eventLister.setAdapter(arrayAdapter);
+
+                // confirmation message
+                Toast.makeText(getBaseContext(), "SMS sent it says " + message + " and was sent to " +
+                        phoneNumber, Toast.LENGTH_LONG).show();
+            }
+            catch (Exception e)
+            {
+                AlertDialog.Builder alertDialogBuilder = new
+                        AlertDialog.Builder(this);
+                AlertDialog dialog = alertDialogBuilder.create();
 
 
-//        android.telephony.SmsManager fireAway = android.telephony.SmsManager.getDefault();
-//        fireAway.sendTextMessage(phoneNumber, null, message, null, null);
+                dialog.setMessage(e.getMessage());
+
+
+                dialog.show();
+            }
+
         }
         else
         {
-            Toast.makeText(getBaseContext(),  " No SMS to send ", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(),  "No SMS to send ", Toast.LENGTH_LONG).show();
         }
 
+
     }
 
-    public static String eventListCount()
-    {
-        int size = eventList.size();
-        String strSize = String.valueOf(size);
-        return strSize;
-    }
-
-    public static void addEvent(event E)
-    {
-        eventList.add(E);
-    }
 
 
     private String readFromFile() {
@@ -154,6 +150,29 @@ public class home extends AppCompatActivity {
         return ret;
     }
 
+
+    //methods to preform on the eventList list object
+
+    protected static void add(event e)
+    {
+        eventList.add(e);
+    }
+
+    protected static int size()
+    {
+        return eventList.size();
+    }
+
+    protected static double getDate(int i)
+    {
+        return eventList.get(i).sortDate();
+
+    }
+
+    protected static void addAt(int i, event e)
+    {
+        eventList.add(i, e);
+    }
 
 
 }

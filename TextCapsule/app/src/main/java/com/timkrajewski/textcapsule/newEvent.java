@@ -1,33 +1,25 @@
 package com.timkrajewski.textcapsule;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +28,9 @@ import java.util.Calendar;
 
 /**
  * Created by TimKrajewski on 11/1/15.
+ *
+ * newEvent is in charge of the New Activity Screen and creating
+ * newEvents to pass back to he master list
  */
 public class newEvent extends Activity {
 
@@ -55,7 +50,6 @@ public class newEvent extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_event);
     }
@@ -63,45 +57,40 @@ public class newEvent extends Activity {
     public void setDate(View v) {
 
 
-
-            Calendar cal = Calendar.getInstance();
-            dateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                    EditText setDate = (EditText) findViewById(R.id.editSetDate);
-                    setYear = year;
-                    setMonth = monthOfYear;
-                    setDay = dayOfMonth;
-                    event.setEventDate(setYear, setMonth, setDay);
-                    setDate.setText(event.eventDateToString());
-                    setDate.setVisibility(View.VISIBLE);
-                    setDate.setFocusable(false);
-                }
-            }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-            dateDialog.show();
+        Calendar cal = Calendar.getInstance();
+        dateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                EditText setDate = (EditText) findViewById(R.id.editSetDate);
+                setYear = year;
+                setMonth = monthOfYear + 1;
+                setDay = dayOfMonth;
+                setDate.setText(event.eventDateToString(year, setMonth, dayOfMonth));
+                setDate.setVisibility(View.VISIBLE);
+                setDate.setFocusable(false);
+            }
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+        dateDialog.show();
 
     }
 
 
     public void setTime(View v) {
 
-            Calendar cal = Calendar.getInstance();
-            timeDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener()
-            {
-                @Override
-                public void onTimeSet(TimePicker view, int hour, int minute)
-                {
-                    EditText setTime = (EditText) findViewById(R.id.editSetTime);
-                    setMin = minute;
-                    setHour = hour;
-                    event.setEventTime(setHour, setMin);
-                    setTime.setText(event.eventTimeToString());
-                    setTime.setVisibility(View.VISIBLE);
-                    setTime.setFocusable(false);
-                }
+        Calendar cal = Calendar.getInstance();
+        timeDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker view, int hour, int minute) {
+                EditText setTime = (EditText) findViewById(R.id.editSetTime);
+                setMin = minute;
+                setHour = hour;
+                setTime.setText(event.eventTimeToString(hour, minute));
+                setTime.setVisibility(View.VISIBLE);
+                setTime.setFocusable(false);
+            }
 
-            }, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), false);
-            timeDialog.show();
+        }, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), false);
+        timeDialog.show();
     }
 
     public void runAnalysis(View v) {
@@ -112,16 +101,29 @@ public class newEvent extends Activity {
         EditText message = (EditText) findViewById(R.id.editCustomMsg);
         EditText setTime = (EditText) findViewById(R.id.editSetTime);
         EditText setDate = (EditText) findViewById(R.id.editSetDate);
+        boolean allNum;
 
-
-        if (!setDate.getText().toString().equals("")  && !setTime.getText().toString().equals(""))
-        {
-            if(!phone.getText().toString().equals("") && phone.getText().toString().length() == 1)// change one back to 9
+        try {
+            allNum = true;
+            for(int i = 0; i < 10; i++ )
             {
-                if(!title.getText().toString().equals(""))
-                {
-                    if(!message.getText().toString().equals(""))
-                    {
+                Double.parseDouble(String.valueOf(phone.getText().toString().charAt(i)));
+            }
+
+        } catch (NumberFormatException e)
+        {
+            allNum = false;
+        }
+        catch (StringIndexOutOfBoundsException e)
+        {
+            allNum = false;
+        }
+
+        if (!setDate.getText().toString().equals("") && !setTime.getText().toString().equals("")) {
+            if (phone.getText().toString().length() == 10 && allNum)// change one back to 10
+            {
+                if (!title.getText().toString().equals("")) {
+                    if (!message.getText().toString().equals("")) {
                         setPhoneNumber = phone.getText().toString();
                         setMessage = message.getText().toString();
 
@@ -129,33 +131,27 @@ public class newEvent extends Activity {
                         //analyze
 
                         setTitle = title.getText().toString();
-                        event.setTitle(setTitle);
                         suggestMessage = analysisAlgorithm.analyze(setTitle);
                         suggestMessage = analysisAlgorithm.getMsg();
                         suggestMsg.setText(suggestMessage);
                         suggestMsg.setVisibility(View.VISIBLE);
                         suggestMsg.setFocusable(false);
-                        event.setMessage(setMessage);
                         suggestMessage = analysisAlgorithm.getMsg();
                         suggestMsg.setText(suggestMessage);
                         suggestMsg.setVisibility(View.VISIBLE);
                         suggestMsg.setFocusable(false);
+                        Toast.makeText(getBaseContext(), "Analyzed...hopefully the boys in the lab found something", Toast.LENGTH_SHORT).show();
 
-                    }
-                    else
+                    } else
                         Toast.makeText(getBaseContext(), "My dad always said if you don't have anything " +
                                 "nice to say don't say anything at all... Do you not have a anything nice to say (Set message)", Toast.LENGTH_LONG).show();
-                }
-                else
+                } else
                     Toast.makeText(getBaseContext(), "We should give this a name! (Set title) ", Toast.LENGTH_LONG).show();
 
-            }
-            else
-                Toast.makeText(getBaseContext(), "This is a cool message! Too bad no one is gonna get it (Pick a valid 9 digit phone number)", Toast.LENGTH_LONG).show();
-
-        }
-        else
-            Toast.makeText(getBaseContext(), "Why don't we pick a time and date first", Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(getBaseContext(), "This is a cool message! Too bad no one is gonna get it (Pick a valid 10 digit phone number)", Toast.LENGTH_LONG).show();
+        } else
+        Toast.makeText(getBaseContext(), "Why don't we pick a time and date first", Toast.LENGTH_LONG).show();
 
 
     runAnalysisHappen = true;
@@ -176,27 +172,11 @@ public class newEvent extends Activity {
 
     }
 
-
-
-    public void goToPreviewEvent(View v)
-    {
-        if(runAnalysisHappen) {
-            Intent intent = new Intent(this, previewEvent.class);
-
-            startActivity(intent);
-        }
-        else
-        {
-            Toast.makeText(getBaseContext(), "We got a lab full of folks wait to analyze what you said", Toast.LENGTH_LONG).show();
-        }
-
-    }
-
     protected void writeToFile(String data) {
 
 
         try {
-            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("eventList.txt", Context.MODE_PRIVATE));
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("save.txt", Context.MODE_PRIVATE));
             outputStreamWriter.append(data);
             outputStreamWriter.close();
         }
@@ -210,7 +190,7 @@ public class newEvent extends Activity {
         String ret = "";
 
         try {
-            InputStream inputStream = openFileInput("eventList.txt");
+            InputStream inputStream = openFileInput("save.txt");
 
             if ( inputStream != null ) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
@@ -237,15 +217,40 @@ public class newEvent extends Activity {
 
 
 
-
     public void goToHome(View v) {
-        if(runAnalysisHappen == true) {
+        if(runAnalysisHappen) {
             event e = new event(setTitle, setYear, setMonth, setDay, setHour, setMin, setPhoneNumber, setMessage);
-            writeToFile(event.convertString());
-            home.addEvent(e);
-            Toast.makeText(getBaseContext(), e.getphoneNum() , Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getApplicationContext(), home.class);
+            //writeToFile(event.convertString());
+            Toast.makeText(getBaseContext(), e.toString() , Toast.LENGTH_LONG).show();
+
+            //this if checks if eventList is empty
+            if(home.size() !=  0 )
+            {
+                //for loop does sort to place newly created events in the correct spot Earliest date come first
+                for(int i = 0; i <= home.size() ; i++)
+                {
+                   if( i == home.size())
+                   {
+                       home.addAt(i,e);
+                       break;
+                   }
+                    else if(home.getDate(i) > e.sortDate())
+                   {
+                           home.addAt(i, e);
+                           break;
+                   }
+                }
+            }
+            else
+            {
+                home.add(e);
+            }
+
+
+
+            Intent intent = new Intent(this, home.class);
             startActivity(intent);
+           // Toast.makeText(getBaseContext(), e.suceesMessage() , Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -254,5 +259,7 @@ public class newEvent extends Activity {
         }
 
     }
+
+
 
 }

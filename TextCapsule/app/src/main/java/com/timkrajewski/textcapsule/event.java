@@ -1,26 +1,28 @@
 package com.timkrajewski.textcapsule;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by TimKrajewski on 11/1/15.
  */
 public class event {
-    private static String name;
-    private static int year;
-    private static int month;
-    private static int day;
-    private static int hour;
-    private static int min;
-    private static String message;
-    private static String AmorPm = "am";
-    private static String phoneNum;
-    private static String title;
+    private String name;
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int min;
+    private String message;
+    private String AmorPm = "am";
+    private String phoneNum;
+    private String title;
 
 
-
-
-    /**Makes an event with name year month day hour min */
-    public event(String titl, int yr, int mnth, int dy, int hr, int mn, String phNm, String msg)
-    {
+    /**
+     * Makes an event with name year month day hour min
+     */
+    public event(String titl, int yr, int mnth, int dy, int hr, int mn, String phNm, String msg) {
         title = titl;
         year = yr;
         month = mnth;
@@ -32,71 +34,60 @@ public class event {
 
     }
 
-    public static void setPhoneNumber(String phoneNumber) {
-        event.phoneNum = phoneNumber;
-    }
 
-    public static void setMessage(String msg) {
+    public void setMessage(String msg) {
         message = msg;
     }
 
-    public static void setEventDate(int yr, int mnth, int dy)
-    {
+    public void setEventDate(int yr, int mnth, int dy) {
         year = yr;
-        month = mnth+1;
+        month = mnth + 1;
         day = dy;
     }
 
-    public static void setEventTime(int setHour, int setMin)
-    {
+    public void setEventTime(int setHour, int setMin) {
         hour = setHour;
         min = setMin;
 
-        if(hour > 12)
-        {
-            hour = hour%12;
+        if (hour > 12) {
+            hour = hour % 12;
             AmorPm = "pm";
         }
-        if( hour == 0)
-        {
+        if (hour == 0) {
             hour = 12;
             AmorPm = "am";
         }
 
     }
 
-    public static void setName(String nm) {
+    public void setName(String nm) {
         name = nm;
     }
 
-    public static void setTitle(String titl) {
+    public void setTitle(String titl) {
         title = titl;
     }
 
 
-
     // To strings for printing
-    public static String eventTimeToString()
-    {
-        if(hour > 11)
-        {
+    public static String eventTimeToString(int hr, int mn) {
+        String AmorPm = "am";
+
+        if (hr > 11) {
             AmorPm = "pm";
         }
-        if(min < 10)
-        {
-            return hour + ":" + "0" + min + AmorPm;
-        }
-        else
-            return hour + ":" + min + AmorPm;
+        if (mn < 10) {
+            return hr + ":" + "0" + mn + AmorPm;
+        } else
+            return hr + ":" + mn + AmorPm;
     }
 
 
-    public static String eventDateToString() {
-
+    public static String eventDateToString(int yr, int mnth, int dy) {
 
         String dayName = "th";
         String monthName;
-        switch (month) {
+        switch (mnth) {
             case 1:
                 monthName = "January";
                 break;
@@ -139,41 +130,75 @@ public class event {
         }
 
 
-        if(day== 1)
+        if (dy == 1)
             dayName = "st";
-        if(day == 2)
+        if (dy == 2)
             dayName = "nd";
-        if(day == 3)
+        if (dy == 3)
             dayName = "rd";
 
-        return monthName + " " + day + dayName + " " + year;
+        return monthName + " " + dy + dayName + " " + yr;
     }
 
 
-    public static String nameTostring() {
+    public String nameTostring() {
         return name;
     }
 
-    public static String getphoneNum() {
+    public String getphoneNum() {
         return phoneNum;
     }
 
-    public static String getTitle() {return title;}
+    public String getTitle() {
+        return title;
+    }
 
-    public static String getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public static String suceesMessage()
-    {
-        return "Sending " + title + " on: " + eventDateToString() + " at " + eventTimeToString() + " sending to "
+    public String suceesMessage() {
+        return "Sending " + title + " on: " + eventDateToString(year, month, day) + " at " + eventTimeToString(hour, min) + " sending to "
                 + phoneNum + " and it says " + "\"" + message + "\"";
     }
 
-    public static String convertString()
-    {
-        return title + " " + message + " " + phoneNum + " " + " " + year + " " + month + " " + day + " " + hour
-                + " " + min + " " +  AmorPm;
+    public String convertString() {
+        return title + " " + message + " " + phoneNum + " " + " " + year + " " + month + 1 + " " + day + " " + hour
+                + " " + min + " " + AmorPm;
+    }
+
+    //toStirng can not be static but has to be over written for the list view
+    public String toString() {
+        return "Sending " + title + " on: " + eventDateToString(year, month, day) + " at " + eventTimeToString(hour, min) + " sending to "
+                + phoneNum + " and it says " + "\"" + message + "\"";
+    }
+
+    public double sortDate() {
+        String str = "";
+        String mon, d, hr, mn;
+        mon = "" + month;
+        d = "" + day;
+        hr = "" + hour;
+        mn = "" + min;
+
+
+        if (month < 10) {
+            mon = "0" + month;
+        }
+        if (day < 10) {
+            d = "0" + day;
+        }
+        if(hour < 10)
+        {
+            hr = "0" + hour;
+        }
+        if(min < 10)
+        {
+            mn = "0" + min;
+        }
+        str += year + mon + d + hr + mn;
+        return Double.parseDouble(str);
+
     }
 
 }

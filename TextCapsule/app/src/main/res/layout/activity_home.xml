@@ -15,40 +15,48 @@
         android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout">
 
-        <Button
+        <ImageButton
+            android:src="@drawable/calendar_plus"
+            android:backgroundTint="@android:color/transparent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Event"
             android:id="@+id/newEvent"
-            android:onClick="goToNewEvent"
-            />
+            android:onClick="goToNewEvent" />
 
         <CalendarView
             android:layout_width="wrap_content"
-            android:layout_height="212dp"
+            android:layout_height="210dp"
             android:id="@+id/calendarView"
             android:layout_gravity="center_vertical|right"
             android:showWeekNumber="false" />
 
         <ListView
+            android:textColor="#01DFD7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/listView"
-
             android:layout_gravity="center_horizontal" />
+
+
 
     </LinearLayout>
 
-    <Button
+    <ImageButton
+        android:src="@drawable/send"
+        android:backgroundTint="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SendSms"
         android:id="@+id/Sendsms"
         android:layout_alignParentBottom="true"
         android:layout_alignRight="@+id/linearLayout"
         android:layout_alignEnd="@+id/linearLayout"
         android:onClick="sendSMS"
-        android:layout_marginRight="43dp"
-        android:layout_marginEnd="43dp" />
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="43dp"
+        />
+
+
+
 
 </RelativeLayout>

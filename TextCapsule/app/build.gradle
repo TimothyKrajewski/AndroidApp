@@ -4,6 +4,7 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+
     defaultConfig {
         applicationId "com.timkrajewski.textcapsule"
         minSdkVersion 15
@@ -30,4 +31,5 @@ dependencies {
 }
 dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+
 }

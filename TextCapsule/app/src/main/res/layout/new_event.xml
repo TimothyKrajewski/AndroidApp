@@ -18,6 +18,7 @@
             android:layout_gravity="center_horizontal">
 
             <Button
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Set Date"
@@ -28,16 +29,19 @@
                 android:layout_alignParentEnd="true" />
 
             <EditText
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="date"
                 android:ems="10"
                 android:id="@+id/editSetDate"
                 android:layout_above="@+id/editSetTime"
-                android:layout_centerHorizontal="true"
-                android:hint="Date" />
+                android:hint="Date"
+                android:layout_toLeftOf="@+id/dateSetBut"
+                android:layout_toStartOf="@+id/dateSetBut" />
 
             <EditText
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="time"
@@ -49,6 +53,7 @@
                 android:hint="Time" />
 
             <Button
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Set Time"
@@ -59,19 +64,19 @@
                 android:onClick="setTime"/>
 
             <EditText
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:ems="10"
                 android:id="@+id/editPhoneNum"
-                android:layout_alignBottom="@+id/button"
+                android:hint="Phone Number"
                 android:layout_alignLeft="@+id/editSetTime"
                 android:layout_alignStart="@+id/editSetTime"
-                android:hint="Phone Number"
-                android:layout_toLeftOf="@+id/button"
-                android:layout_toStartOf="@+id/button" />
+                android:layout_below="@+id/timeSetBut" />
 
             <EditText
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editEventTitle"
@@ -84,6 +89,7 @@
                 android:layout_alignEnd="@+id/editPhoneNum" />
 
             <EditText
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editCustomMsg"
@@ -91,21 +97,12 @@
                 android:layout_below="@+id/editEventTitle"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignRight="@+id/button"
-                android:layout_alignEnd="@+id/button"
-                android:inputType="textMultiLine"/>
+                android:inputType="textMultiLine"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Select Contact"
-                android:id="@+id/button"
-                android:layout_below="@+id/timeSetBut"
-                android:onClick="selectContact"
-                android:layout_toRightOf="@+id/textView3"
-                android:layout_toEndOf="@+id/textView3" />
-
-            <Button
+                android:textColor="#01DFD7"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,61 +112,47 @@
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true" />
 
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/editContactName"
-                android:layout_above="@+id/editEventTitle"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_toLeftOf="@+id/editPhoneNum"
-                android:layout_toStartOf="@+id/editPhoneNum" />
-
             <Button
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Analyze"
                 android:id="@+id/saveDataBut"
                 android:onClick="runAnalysis"
-                android:layout_above="@+id/previewBut"
-                android:layout_centerHorizontal="true" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Preview"
-                android:id="@+id/previewBut"
-                android:onClick="goToPreviewEvent"
-                android:layout_above="@+id/finishBut"
-                android:layout_centerHorizontal="true" />
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Suggested Message"
-                android:id="@+id/checkSugMsg"
-                android:checked="false"
-                android:onClick="useSugMsg"
-                android:layout_below="@+id/editCustomMsg"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_above="@+id/finishBut" />
 
             <TextView
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="The Suggested Message is "
-                android:id="@+id/textView3"
-                android:layout_below="@+id/checkSugMsg"
+                android:id="@+id/sugMsg"
+                android:layout_below="@+id/editCustomMsg"
                 android:layout_centerHorizontal="true" />
 
             <EditText
+                android:textColor="#01DFD7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/editSugMsg"
-                android:layout_below="@+id/textView3"
+                android:hint="Shoot... No key word found!"
+                android:layout_below="@+id/sugMsg"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignRight="@+id/button"
-                android:layout_alignEnd="@+id/button" />
+                android:layout_alignRight="@+id/timeSetBut"
+                android:layout_alignEnd="@+id/timeSetBut"
+                android:editable="false" />
+
+            <Button
+                android:textColor="#01DFD7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Use Suggested Method"
+                android:id="@+id/button"
+                android:onClick="useSugMsg"
+                android:layout_below="@+id/editSugMsg"
+                android:layout_centerHorizontal="true" />
 
         </RelativeLayout>
     </LinearLayout>
