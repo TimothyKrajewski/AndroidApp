@@ -209,12 +209,19 @@ public class newEvent extends Activity {
 //-----------------------------------------------------------------------------------------
     public void useSugMsg(View v)
     {
-        if(suggestMessage != null)
+        if(runAnalysisHappen)
         {
-            EditText message = (EditText) findViewById(R.id.editCustomMsg);
-            message.setText(suggestMessage);
-            message.setVisibility(View.VISIBLE);
-            suggestMessage = null;
+            if (suggestMessage != null) {
+                EditText message = (EditText) findViewById(R.id.editCustomMsg);
+                message.setText(suggestMessage);
+                message.setVisibility(View.VISIBLE);
+                suggestMessage = null;
+            }
+        }
+        else
+        {
+            Toast.makeText(getBaseContext(), "Why don't we get the folks in the lab to analyze this", Toast.LENGTH_LONG)                        .show();
+
         }
 
     }
