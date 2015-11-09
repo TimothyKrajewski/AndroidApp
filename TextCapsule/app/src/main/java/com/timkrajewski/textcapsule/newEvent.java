@@ -57,6 +57,8 @@ public class newEvent extends Activity {
     private String setMessage;
     private String suggestMessage = analysisAlgorithm.getMsg();
     private boolean runAnalysisHappen = false;
+    private boolean dayIsToday = false;
+    private Calendar checkCurrent = Calendar.getInstance();
 
     //-----------------------------------------------------------------------------------------
 //
@@ -84,20 +86,41 @@ public class newEvent extends Activity {
 //    Pre-condition: Set Date Button is pressed
 //    Post-condition: temp variables for year month day are set by user
 //-----------------------------------------------------------------------------------------
-    public void setDate(View v) {
-
+    public void setDate(View v)
+    {
+        dayIsToday = false;
 
         Calendar cal = Calendar.getInstance();
-        dateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        dateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener()
+        {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth)
+            {
+
                 EditText setDate = (EditText) findViewById(R.id.editSetDate);
-                setYear = year;
-                setMonth = monthOfYear + 1;
-                setDay = dayOfMonth;
-                setDate.setText(event.eventDateToString(year, setMonth, dayOfMonth));
-                setDate.setVisibility(View.VISIBLE);
-                setDate.setFocusable(false);
+
+                if(checkCurrent.get(Calendar.YEAR) <= year && checkCurrent.get(Calendar.MONTH) <= monthOfYear
+                        && checkCurrent.get(Calendar.DAY_OF_MONTH) <= dayOfMonth)
+                {
+                    setYear = year;
+                    setMonth = monthOfYear + 1;
+                    setDay = dayOfMonth;
+                    setDate.setText(event.eventDateToString(year, setMonth, dayOfMonth));
+                    setDate.setVisibility(View.VISIBLE);
+                    setDate.setFocusable(false);
+                }
+                else
+                {
+                    Toast.makeText(getBaseContext(), "Pick a date in the future", Toast.LENGTH_LONG).show();
+                }
+
+                if(checkCurrent.get(Calendar.YEAR) == year && checkCurrent.get(Calendar.MONTH) == monthOfYear
+                        && checkCurrent.get(Calendar.DAY_OF_MONTH) == dayOfMonth)
+                {
+                    dayIsToday = true;
+                }
+
+
             }
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
         dateDialog.show();
@@ -121,14 +144,49 @@ public class newEvent extends Activity {
             @Override
             public void onTimeSet(TimePicker view, int hour, int minute) {
                 EditText setTime = (EditText) findViewById(R.id.editSetTime);
-                setMin = minute;
-                setHour = hour;
-                setTime.setText(event.eventTimeToString(hour, minute));
-                setTime.setVisibility(View.VISIBLE);
-                setTime.setFocusable(false);
+                if(dayIsToday)
+                {
+                    if (hour >= checkCurrent.get(Calendar.HOUR_OF_DAY))
+                    {
+                        if(hour == checkCurrent.get(Calendar.HOUR_OF_DAY))
+                        {
+                            if(minute >checkCurrent.get(Calendar.MINUTE))
+                            {
+                                setMin = minute;
+                                setTime.setText(event.eventTimeToString(hour, minute));
+                                setTime.setVisibility(View.VISIBLE);
+                                setTime.setFocusable(false);
+                            }
+                            else
+                            {
+                                Toast.makeText(getBaseContext(), "Pick a time in the future", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        else
+                        {
+                            setHour = hour;
+                            setMin = minute;
+                            setTime.setText(event.eventTimeToString(hour, minute));
+                            setTime.setVisibility(View.VISIBLE);
+                            setTime.setFocusable(false);
+                        }
+                    }
+                    else
+                    {
+                        Toast.makeText(getBaseContext(), "Pick a time in the future", Toast.LENGTH_LONG).show();
+                    }
+                }
+                else
+                {
+                    setMin = minute;
+                    setHour = hour;
+                    setTime.setText(event.eventTimeToString(hour, minute));
+                    setTime.setVisibility(View.VISIBLE);
+                    setTime.setFocusable(false);
+                }
             }
 
-        }, cal.get(Calendar.HOUR), cal.get(Calendar.MINUTE), false);
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), false);
         timeDialog.show();
     }
 

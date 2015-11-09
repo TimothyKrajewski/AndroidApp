@@ -103,9 +103,9 @@ public class event {
             AmorPm = "pm";
         }
         if (mn < 10) {
-            return hr + ":" + "0" + mn + AmorPm;
+            return (hr%12) + ":" + "0" + mn + AmorPm;
         } else
-            return hr + ":" + mn + AmorPm;
+            return (hr%12) + ":" + mn + AmorPm;
     }
 
     //-----------------------------------------------------------------------------------------
